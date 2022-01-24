@@ -55,7 +55,6 @@ class DashboardDataManager:
         if price < self.max_price:
             self.data = self.data_operations.set_price_filter(dFrame=self.data, max_price=price)
         # cuisine filter
-        print(f"Cuisine Filter----> {cuisine}")
         if 'NA' not in cuisine and len(cuisine) > 0:
             self.data = self.data_operations.set_cuisine_filter(dFrame=self.data, cuisine_list=cuisine)
         # nearby places filter
