@@ -150,7 +150,7 @@ if chosen_id == '2':
         # Display the generated image:
         st.image(wc.to_array())
 else:
-    st.write(data_manager.data)
+    st.write(data_manager.get_df())
 ######################################################
 cusines = px.pie(
     hole=0.2,

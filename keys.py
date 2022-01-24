@@ -152,6 +152,16 @@ class DashboardDataManager:
             return f"{int(avg)} (on avg.)"
         except:
             return "NA"
+
+    def get_df(self):
+        new_df = self.data.filter(['hotel_name', 'rating', 'price', 'review_count' ,'hotel_rank'], axis=1)
+        new_df['review_count'] = new_df['review_count'].replace(np.nan, 0)
+        new_df['hotel_rank'] = new_df['hotel_rank'].replace(np.nan, 0)
+        new_df['price'] = new_df['price'].replace(np.nan, 0)
+        new_df['rating'] = new_df['rating'].replace(np.nan, 0)
+        new_df['review_count'] = new_df['review_count'].astype(dtype=int, errors='ignore')
+        new_df['hotel_rank'] = new_df['hotel_rank'].astype(dtype=int, errors='ignore')
+        return new_df
 # ------
 import numpy as np
 import pandas as pd
