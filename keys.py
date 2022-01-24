@@ -30,7 +30,7 @@ class DashboardDataManager:
         self.max_review_count = (self.data.review_count.max() // 100) * 100  # 725
 
     def get_filter_data(self):
-        self.cuisines = ['NA'] + self.get_list(self.data_operations.get_all_cuisines(dFrame=self.data))
+        self.cuisines = ['NA'] + self.get_list_from_map(self.data_operations.get_all_cuisines(dFrame=self.data))
         self.amenities = ['NA'] + self.get_list(self.data_operations.get_all_amenities(dFrame=self.data))
         self.languages = ['NA'] + self.get_list(self.data_operations.get_all_languages(dFrame=self.data))
         self.classes = ['NA'] + self.get_list(self.data_operations.get_all_classes(dFrame=self.data))
@@ -55,6 +55,7 @@ class DashboardDataManager:
         if price < self.max_price:
             self.data = self.data_operations.set_price_filter(dFrame=self.data, max_price=price)
         # cuisine filter
+        print(f"Cuisine Filter----> {cuisine}")
         if 'NA' not in cuisine and len(cuisine) > 0:
             self.data = self.data_operations.set_cuisine_filter(dFrame=self.data, cuisine_list=cuisine)
         # nearby places filter
@@ -82,6 +83,12 @@ class DashboardDataManager:
         result = []
         for x in map_list:
             result.append(x)
+        return result
+
+    def get_list_from_map(self,map_list):
+        result = []
+        for value in map_list:
+            result.append(value[0])
         return result
 
     def get_top_cusine(self):
@@ -136,34 +143,22 @@ class DashboardDataManager:
                     break
                 else:
                     counter += 1
-                result[row['hotel_name']] = 100 - counter
+                result[row['hotel_name']] = 100 - (3* counter)
 
         self.top_20 = result
 
-
+    def get_nearby_places_avg(self):
+        avg = self.data.attractions_nearby.mean()
+        try:
+            return f"{int(avg)} (on avg.)"
+        except:
+            return "NA"
 # ------
 import numpy as np
 import pandas as pd
 
 
 class DummyData:
-    hotels = [
-        dict(text="Robinhood", value=16000, color="#b5de2b", country="US", industry="Cryptocurrency"),
-        dict(text="Personio", value=8500, color="#b5de2b", country="DE", industry="Human Resources"),
-        dict(text="Boohoo", value=6700, color="#b5de2b", country="UK", industry="Beauty"),
-        dict(text="Deliveroo", value=13400, color="#b5de2b", country="UK", industry="Delivery"),
-        dict(text="SumUp", value=8300, color="#b5de2b", country="UK", industry="Credit Cards"),
-        dict(text="CureVac", value=12400, color="#b5de2b", country="DE", industry="BioPharma"),
-        dict(text="Deezer", value=10300, color="#b5de2b", country="FR", industry="Music Streaming"),
-        dict(text="Eurazeo", value=31, color="#b5de2b", country="FR", industry="Asset Management"),
-        dict(text="Drift", value=6000, color="#b5de2b", country="US", industry="Marketing Automation"),
-        dict(text="Twitch", value=4500, color="#b5de2b", country="US", industry="Social Media"),
-        dict(text="Plaid", value=5600, color="#b5de2b", country="US", industry="FinTech"),
-        dict(text="Robinood", value=16000, color="#b5de2b", country="US", industry="Cryptocurrency"),
-        dict(text="Persnio", value=8500, color="#b5de2b", country="DE", industry="Human Resources"),
-        dict(text="Boooo", value=6700, color="#b5de2b", country="UK", industry="Beauty"),
-        dict(text="Deiveroo", value=13400, color="#b5de2b", country="UK", industry="Delivery"),
-    ]
     donut_data = {'India': 4500,
                   'Australia': 2500,
                   'Japan': 1053,

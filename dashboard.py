@@ -6,6 +6,7 @@ import extra_streamlit_components as stx
 import plotly.express as px
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import numpy as np
 
 # ----- PAGE CONFIG (title bar)------
 st.set_page_config(
@@ -53,9 +54,9 @@ price = st.sidebar.slider(
 )
 
 st.sidebar.write("")
-cuisine = st.sidebar.selectbox(
+cuisine = st.sidebar.multiselect(
     "Cuisine:",
-    data_manager.cuisines,
+    options= data_manager.cuisines,
     key=KeyStrings.CUISINE_FILTER,
 )
 
@@ -129,11 +130,11 @@ with left_column:
 
 with middle_column:
     st.subheader(f"Average Rating:\n{round(data_manager.data.rating.mean(), 2)}")
-    st.subheader(f"Places Nearby:\n{int(data_manager.data.attractions_nearby.mean())} (on avg.)")
+    st.subheader(f"Places Nearby:\n{data_manager.get_nearby_places_avg()}")
     st.subheader(f"Hotel Class:\n{data_manager.get_class()}")
 with right_column:
     st.subheader(f"Average Hotel Price:\n{round(data_manager.data.price.mean(), 2)}")
-    st.subheader(f"Restaurants Nearby\n{data_manager.get_restaurants()}")
+    st.subheader(f"Most Hotels are near\n{data_manager.get_restaurants()} Restaurant")
 
 st.markdown("""---""")
 st.markdown("## Top Hotels")
