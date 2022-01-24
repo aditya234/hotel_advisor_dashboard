@@ -1,5 +1,4 @@
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 from data_manager import KeyStrings, DashboardDataManager
 import extra_streamlit_components as stx

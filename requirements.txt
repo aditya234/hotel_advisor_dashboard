@@ -1,0 +1,8 @@
+streamlit==1.4.0
+pandas==1.0.5
+numpy==1.20.0
+extra-streamlit-components==0.1.53
+wordcloud==1.8.1
+matplotlib==3.3.4
+plotly==4.14.3
+plotly-express==0.4.1
