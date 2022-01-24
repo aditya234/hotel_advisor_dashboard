@@ -191,3 +191,31 @@ class DashboardDataManager:
             names.append(class_name)
             counts.append(int(count))
         return names, counts
+
+    def get_amenities_for_donut(self):
+        counts = []
+        names = []
+        amenities_data = self.data_operations.get_all_amenities(self.data)
+        data_count = 0
+        for amenity, count in amenities_data.items():
+            if data_count == 10:
+                break
+            else:
+                data_count += 1
+            names.append(amenity)
+            counts.append(int(count))
+        return names, counts
+
+    def get_languages_for_donut(self):
+        counts = []
+        names = []
+        languages = self.data_operations.get_all_languages(self.data)
+        data_count = 0
+        for language, count in languages:
+            if data_count == 10:
+                break
+            else:
+                data_count += 1
+            names.append(language)
+            counts.append(int(count))
+        return names, counts

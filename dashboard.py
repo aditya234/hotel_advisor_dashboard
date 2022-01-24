@@ -177,7 +177,7 @@ with left_column:
         st.markdown("##")
         st.markdown("##")
 with right_column:
-    if len(cuisine_names) > 0:
+    if len(class_name) > 0:
         st.plotly_chart(hotel_classes, use_container_width=True)
     else:
         st.write("No Data regarding Top Classes")
@@ -185,42 +185,38 @@ with right_column:
         st.markdown("##")
 st.markdown("##")
 
+amenities_names, amenities_counts = data_manager.get_amenities_for_donut()
 amenities = px.pie(
     hole=0.2,
-    labels=[10, 100, 230, 50, 84],
-    names=["A", "B", "C", "D", "E"],
-    values=[10, 5, 24, 50, 30],
-    title='Amenities'
+    labels=amenities_counts,
+    names=amenities_names,
+    values=amenities_counts,
+    title=f'Top {len(amenities_names)} Amenities'
 )
-places_nearby = px.pie(
-    hole=0.2,
-    labels=[10, 100, 230, 50, 84],
-    names=["A", "B", "C", "D", "E"],
-    values=[100, 56, 24, 5, 30],
-    title='Total Places Nearby'
-)
-left_column, right_column = st.columns(2)
-left_column.plotly_chart(amenities, use_container_width=True)
-right_column.plotly_chart(places_nearby, use_container_width=True)
-st.markdown("##")
 
-languages = px.pie(
+language_names, language_counts = data_manager.get_languages_for_donut()
+languages_donut = px.pie(
     hole=0.2,
-    labels=[10, 100, 230, 50, 84],
-    names=["A", "B", "C", "D", "E"],
-    values=[10, 5, 24, 50, 30],
-    title='Languages'
-)
-hotels_nearby = px.pie(
-    hole=0.2,
-    labels=[10, 100, 230, 50, 84],
-    names=["A", "B", "C", "D", "E"],
-    values=[100, 56, 24, 5, 30],
-    title='Total Hotels Nearby'
+    labels=language_counts,
+    names=language_names,
+    values=language_counts,
+    title=f'Top {len(language_names)} Languages'
 )
 left_column, right_column = st.columns(2)
-left_column.plotly_chart(languages, use_container_width=True)
-right_column.plotly_chart(hotels_nearby, use_container_width=True)
+with left_column:
+    if len(amenities_names) > 0:
+        left_column.plotly_chart(amenities, use_container_width=True)
+    else:
+        st.write("No Data regarding Top Amenities")
+        st.markdown("##")
+        st.markdown("##")
+with right_column:
+    if len(language_names) > 0:
+        st.plotly_chart(languages_donut, use_container_width=True)
+    else:
+        st.write("No Data regarding most used Languages")
+        st.markdown("##")
+        st.markdown("##")
 st.markdown("##")
 
 # ---- HIDE STREAMLIT STYLE ----
