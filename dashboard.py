@@ -56,7 +56,7 @@ price = st.sidebar.slider(
 st.sidebar.write("")
 cuisine = st.sidebar.multiselect(
     "Cuisine:",
-    options= data_manager.cuisines,
+    options=data_manager.cuisines,
     key=KeyStrings.CUISINE_FILTER,
 )
 
@@ -146,7 +146,7 @@ if chosen_id == '2':
     if len(data_manager.top_20) == 0:
         st.write("No Data")
     else:
-        wc = WordCloud(background_color="white",width= 1200,height= 500).fit_words(data_manager.top_20)
+        wc = WordCloud(background_color="white", width=1200, height=500).fit_words(data_manager.top_20)
         # Display the generated image:
         st.image(wc.to_array())
 else:
@@ -158,14 +158,15 @@ cusines = px.pie(
     labels=cuisine_counts,
     names=cuisine_names,
     values=cuisine_counts,
-    title=f"Top {len(cuisine_names)} Cuisines"
+    title=f"Top {len(cuisine_names)} Cuisines",
 )
+class_name, class_counts = data_manager.get_classes_for_donut()
 hotel_classes = px.pie(
     hole=0.2,
-    labels=[10, 100, 230, 50, 84],
-    names=["A", "B", "C", "D", "E"],
-    values=[100, 56, 24, 5, 30],
-    title='Hotel Classes'
+    labels=class_counts,
+    names=class_name,
+    values=class_counts,
+    title=f'Hotel {len(class_name)} Classes',
 )
 left_column, right_column = st.columns(2)
 with left_column:
@@ -176,7 +177,12 @@ with left_column:
         st.markdown("##")
         st.markdown("##")
 with right_column:
-    st.plotly_chart(hotel_classes, use_container_width=True)
+    if len(cuisine_names) > 0:
+        st.plotly_chart(hotel_classes, use_container_width=True)
+    else:
+        st.write("No Data regarding Top Classes")
+        st.markdown("##")
+        st.markdown("##")
 st.markdown("##")
 
 amenities = px.pie(

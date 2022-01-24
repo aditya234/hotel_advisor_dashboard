@@ -177,3 +177,17 @@ class DashboardDataManager:
             names.append(cuisine)
             counts.append(int(count))
         return names, counts
+
+    def get_classes_for_donut(self):
+        counts = []
+        names = []
+        classes_data = self.data_operations.get_all_classes(self.data)
+        data_count = 0
+        for class_name, count in classes_data:
+            if data_count == 10:
+                break
+            else:
+                data_count += 1
+            names.append(class_name)
+            counts.append(int(count))
+        return names, counts
