@@ -1,4 +1,5 @@
 from data_operations import DataOperations
+import numpy as np
 
 
 class KeyStrings:
@@ -84,7 +85,7 @@ class DashboardDataManager:
             result.append(x)
         return result
 
-    def get_list_from_map(self,map_list):
+    def get_list_from_map(self, map_list):
         result = []
         for value in map_list:
             result.append(value[0])
@@ -142,7 +143,7 @@ class DashboardDataManager:
                     break
                 else:
                     counter += 1
-                result[row['hotel_name']] = 100 - (3* counter)
+                result[row['hotel_name']] = 100 - (3 * counter)
 
         self.top_20 = result
 
@@ -154,7 +155,7 @@ class DashboardDataManager:
             return "NA"
 
     def get_df(self):
-        new_df = self.data.filter(['hotel_name', 'rating', 'price', 'review_count' ,'hotel_rank'], axis=1)
+        new_df = self.data.filter(['hotel_name', 'rating', 'price', 'review_count', 'hotel_rank'], axis=1)
         new_df['review_count'] = new_df['review_count'].replace(np.nan, 0)
         new_df['hotel_rank'] = new_df['hotel_rank'].replace(np.nan, 0)
         new_df['price'] = new_df['price'].replace(np.nan, 0)
@@ -162,3 +163,17 @@ class DashboardDataManager:
         new_df['review_count'] = new_df['review_count'].astype(dtype=int, errors='ignore')
         new_df['hotel_rank'] = new_df['hotel_rank'].astype(dtype=int, errors='ignore')
         return new_df
+
+    def get_cusines_for_donut(self):
+        counts = []
+        names = []
+        cusines_data = self.data_operations.get_all_cuisines(self.data)
+        data_count = 0
+        for cuisine, count in cusines_data:
+            if data_count == 10:
+                break
+            else:
+                data_count += 1
+            names.append(cuisine)
+            counts.append(int(count))
+        return names, counts

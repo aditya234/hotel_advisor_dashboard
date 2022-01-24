@@ -152,12 +152,13 @@ if chosen_id == '2':
 else:
     st.write(data_manager.get_df())
 ######################################################
+cuisine_names, cuisine_counts = data_manager.get_cusines_for_donut()
 cusines = px.pie(
-    hole=0.2,
-    labels=[10, 100, 230, 50, 84],
-    names=["A", "B", "C", "D", "E"],
-    values=[10, 5, 24, 50, 30],
-    title='Cuisines'
+    hole=0.35,
+    labels=cuisine_counts,
+    names=cuisine_names,
+    values=cuisine_counts,
+    title=f"Top {len(cuisine_names)} Cuisines"
 )
 hotel_classes = px.pie(
     hole=0.2,
@@ -167,8 +168,15 @@ hotel_classes = px.pie(
     title='Hotel Classes'
 )
 left_column, right_column = st.columns(2)
-left_column.plotly_chart(cusines, use_container_width=True)
-right_column.plotly_chart(hotel_classes, use_container_width=True)
+with left_column:
+    if len(cuisine_names) > 0:
+        st.plotly_chart(cusines, use_container_width=True)
+    else:
+        st.write("No Data for Top Cuisines")
+        st.markdown("##")
+        st.markdown("##")
+with right_column:
+    st.plotly_chart(hotel_classes, use_container_width=True)
 st.markdown("##")
 
 amenities = px.pie(
