@@ -162,18 +162,3 @@ class DashboardDataManager:
         new_df['review_count'] = new_df['review_count'].astype(dtype=int, errors='ignore')
         new_df['hotel_rank'] = new_df['hotel_rank'].astype(dtype=int, errors='ignore')
         return new_df
-# ------
-import numpy as np
-import pandas as pd
-
-
-class DummyData:
-    donut_data = {'India': 4500,
-                  'Australia': 2500,
-                  'Japan': 1053,
-                  'America': 500,
-                  'Russia': 3200}
-    bar_data = pd.DataFrame(dict(
-        X_axis=[i for i in range(100)],
-        Y_axis=np.random.randint(10, 50, 100)
-    ))

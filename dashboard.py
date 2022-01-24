@@ -1,7 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from keys import KeyStrings, DashboardDataManager, DummyData
+from data_manager import KeyStrings, DashboardDataManager
 import extra_streamlit_components as stx
 import plotly.express as px
 from wordcloud import WordCloud
