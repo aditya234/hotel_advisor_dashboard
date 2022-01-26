@@ -36,48 +36,12 @@ class DashboardDataManager:
         self.languages = ['NA'] + self.get_list(self.data_operations.get_all_languages(dFrame=self.data))
         self.classes = ['NA'] + self.get_list(self.data_operations.get_all_classes(dFrame=self.data))
 
-    def set_filters(self, cities, rating, price, cuisine, nearby_places, nearby_restaurants, total_reviews, amenities,
-                    languages, hotel_classes):
+    def set_filters(self, city= None):
         self.data = self.data_operations.data.copy()
         # city filter
-        if len(cities) > 0:
-            self.data = self.data_operations.set_city_filter(dFrame=self.data, cities=cities)
-        # rating filter
-        if rating != 'All':
-            rating_map = {
-                '5': 5,
-                '4 and above': 4,
-                '3 and above': 3,
-                '2 and above': 2,
-                '1 and above': 1,
-            }
-            self.data = self.data_operations.set_rating_filter(dFrame=self.data, min_rating=rating_map[rating])
-        # price filter
-        if price < self.max_price:
-            self.data = self.data_operations.set_price_filter(dFrame=self.data, max_price=price)
-        # cuisine filter
-        if 'NA' not in cuisine and len(cuisine) > 0:
-            self.data = self.data_operations.set_cuisine_filter(dFrame=self.data, cuisine_list=cuisine)
-        # nearby places filter
-        if nearby_places < self.max_nearby_places:
-            self.data = self.data_operations.set_attractions_nearby_filter(dFrame=self.data,
-                                                                           min_attractions_nearby=nearby_places)
-        # nearby restaurants filter
-        if nearby_restaurants < self.max_restaurants_nearby:
-            self.data = self.data_operations.set_restraunts_nearby_filter(dFrame=self.data,
-                                                                          min_restraunts_nearby=nearby_restaurants)
-        # reviews filter
-        if total_reviews < self.max_review_count:
-            self.data = self.data_operations.set_review_filter(dFrame=self.data, min_reviews=total_reviews)
-        # amenities filter
-        if 'NA' not in amenities and len(amenities) > 0:
-            self.data = self.data_operations.set_amenity_filter(dFrame=self.data, amenity_list=amenities)
-        # languages filter
-        if 'NA' not in languages and len(languages) > 0:
-            self.data = self.data_operations.set_language_filter(dFrame=self.data, language_list=languages)
-        # class filter
-        if 'NA' not in hotel_classes and len(hotel_classes) > 0:
-            self.data = self.data_operations.set_class_filter(dFrame=self.data, class_list=hotel_classes)
+        if city is not None:
+            self.data = self.data_operations.set_city_filter(dFrame=self.data, cities=[city])
+
 
     def get_list(self, map_list):
         result = []
