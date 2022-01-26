@@ -4,44 +4,24 @@ import matplotlib.pyplot as plt
 import json
 import math
 
+DATA_PATH = './data/data.csv'
+
 
 class DataOperations:
     def __init__(self):
         self.data = None
         self.cities = []
-        # loading json data from file
-        f1 = open('./data/tokyo_hotels.json', "r")
-        data1 = json.loads(f1.read())
-        f1.close()
-
-        f2 = open('./data/london_hotels.json', "r")
-        data2 = json.loads(f2.read())
-        f1.close()
-
-        f3 = open('./data/singapore_hotels.json', "r")
-        data3 = json.loads(f3.read())
-        f1.close()
-
-        # adding data into dataframe
-        self.add_city(data1, 'Tokyo')
-        self.add_city(data2, 'London')
-        self.add_city(data3, 'Singapore')
+        self.add_data()
 
         # process data
         self.process_data()
 
-    def add_city(self, json_data, city):
-        df_new = pd.json_normalize(json_data)
-        df_new['city'] = city
-        self.cities.append(city)
-        if self.data is None:
-            self.data = df_new
-        else:
-            self.data = self.data.append(df_new)
+    def add_data(self):
+        self.data = pd.read_csv(DATA_PATH)
 
     def process_data(self):
         # data manipulation and cleaning
-        self.data = self.data.drop(['reviews', 'top_cuisines'], axis=1)
+        self.data = self.data.drop(['top_cuisines'], axis=1)
 
         self.data.languages = self.data.languages.apply(lambda x: (str(x)).split(", "))
 
@@ -178,6 +158,18 @@ class DataOperations:
         restaurants = sorted(restaurants.items(), key=lambda x: x[1], reverse=True)
         return restaurants
 
+    def get_all_best_features(self, dFrame):
+        best_features = {}
+        for index, row in dFrame.iterrows():
+            for feature in row['best_features_as_per_reviews']:
+                if feature in best_features:
+                    best_features[feature] += 1
+                else:
+                    best_features[feature] = 1
+        # sorting in descending order
+        best_features = sorted(best_features.items(), key=lambda x: x[1], reverse=True)
+        return best_features
+
     # helpers
     def group_cuisines(self, restaurant_list):
         cuisines = {}
@@ -220,7 +212,6 @@ class DataOperations:
             return True
         except ValueError:
             return False
-
 
 # # testing
 # if __name__ == "__main__":
