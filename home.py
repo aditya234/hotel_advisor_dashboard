@@ -76,21 +76,6 @@ with column_two:
     st.subheader(f"Best Class:\n{data_manager.get_class()}")
     st.subheader(f"Average Price:\n{round(data_manager.data.price.mean(), 2)}")
 
-st.markdown("""---""")
-st.markdown("## Top Hotels")
-chosen_id = stx.tab_bar(data=[
-    stx.TabBarItemData(id=1, title="All Hotels", description=""),
-    stx.TabBarItemData(id=2, title="Top 20 Hotels", description=""),
-], default=1)
-if chosen_id == '2':
-    if len(data_manager.top_20) == 0:
-        st.write("No Data")
-    else:
-        wc = WordCloud(background_color="white", width=1200, height=500).fit_words(data_manager.top_20)
-        # Display the generated image:
-        st.image(wc.to_array())
-else:
-    st.write(data_manager.get_df())
 ######################################################
 cuisine_names, cuisine_counts = data_manager.get_cusines_for_donut()
 cusines = px.pie(
