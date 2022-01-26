@@ -51,14 +51,14 @@ with column_one:
         ),
         layers=[
             pdk.Layer(
-               'HexagonLayer',
-               data=data_manager.map_df,
-               get_position='[lon, lat]',
-               radius=200,
-               elevation_scale=4,
-               elevation_range=[0, 5000],
-               pickable=True,
-               extruded=True,
+                'HexagonLayer',
+                data=data_manager.map_df,
+                get_position='[lon, lat]',
+                radius=200,
+                elevation_scale=4,
+                elevation_range=[0, 5000],
+                pickable=True,
+                extruded=True,
             ),
             pdk.Layer(
                 'ScatterplotLayer',
@@ -77,32 +77,33 @@ with column_two:
     st.subheader(f"Average Price:\n{round(data_manager.data.price.mean(), 2)}")
 
 ######################################################
-cuisine_names, cuisine_counts = data_manager.get_cusines_for_donut()
+cuisine_data = data_manager.get_cusines_for_donut()
 cusines = px.pie(
-    hole=0.2,
-    labels=cuisine_counts,
-    names=cuisine_names,
-    values=cuisine_counts,
-    title=f"Top {len(cuisine_names)} Styles",
+    cuisine_data,
+    # hole=0.2,
+    names='Cuisine',
+    values='Total',
+    title=f"Top {len(cuisine_data)} Styles",
 )
-class_name, class_counts = data_manager.get_classes_for_donut()
+
+class_data = data_manager.get_classes_for_donut()
 hotel_classes = px.pie(
-    hole=0.2,
-    labels=class_counts,
-    names=class_name,
-    values=class_counts,
-    title=f'Hotel {len(class_name)} Classes',
+    class_data,
+    # hole=0.2,
+    names='Class',
+    values='Total',
+    title=f'Hotel {len(class_data)} Classes',
 )
 left_column, right_column = st.columns(2)
 with left_column:
-    if len(cuisine_names) > 0:
+    if len(cuisine_data) > 0:
         st.plotly_chart(cusines, use_container_width=True)
     else:
         st.write("No Data for Top Cuisines")
         st.markdown("##")
         st.markdown("##")
 with right_column:
-    if len(class_name) > 0:
+    if len(class_data) > 0:
         st.plotly_chart(hotel_classes, use_container_width=True)
     else:
         st.write("No Data regarding Top Classes")
@@ -110,33 +111,32 @@ with right_column:
         st.markdown("##")
 st.markdown("##")
 
-amenities_names, amenities_counts = data_manager.get_amenities_for_donut()
+amenities_data = data_manager.get_amenities_for_donut()
 amenities = px.pie(
-    hole=0.2,
-    labels=amenities_counts,
-    names=amenities_names,
-    values=amenities_counts,
-    title=f'Top {len(amenities_names)} Amenities'
+    amenities_data,
+    names='Amenity',
+    values='Total',
+    title=f'Top {len(amenities_data)} Amenities'
 )
 
-language_names, language_counts = data_manager.get_languages_for_donut()
+language_data = data_manager.get_languages_for_donut()
 languages_donut = px.pie(
+    language_data,
     hole=0.2,
-    labels=language_counts,
-    names=language_names,
-    values=language_counts,
-    title=f'Top {len(language_names)} Languages'
+    names='Language',
+    values='Total',
+    title=f'Top {len(language_data)} Languages'
 )
 left_column, right_column = st.columns(2)
 with left_column:
-    if len(amenities_names) > 0:
+    if len(amenities_data) > 0:
         left_column.plotly_chart(amenities, use_container_width=True)
     else:
         st.write("No Data regarding Top Amenities")
         st.markdown("##")
         st.markdown("##")
 with right_column:
-    if len(language_names) > 0:
+    if len(language_data) > 0:
         st.plotly_chart(languages_donut, use_container_width=True)
     else:
         st.write("No Data regarding most used Languages")
