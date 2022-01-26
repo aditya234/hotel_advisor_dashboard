@@ -94,22 +94,6 @@ hotel_classes = px.pie(
     values='Total',
     title=f'Hotel {len(class_data)} Classes',
 )
-left_column, right_column = st.columns(2)
-with left_column:
-    if len(cuisine_data) > 0:
-        st.plotly_chart(cusines, use_container_width=True)
-    else:
-        st.write("No Data for Top Cuisines")
-        st.markdown("##")
-        st.markdown("##")
-with right_column:
-    if len(class_data) > 0:
-        st.plotly_chart(hotel_classes, use_container_width=True)
-    else:
-        st.write("No Data regarding Top Classes")
-        st.markdown("##")
-        st.markdown("##")
-st.markdown("##")
 
 amenities_data = data_manager.get_amenities_for_donut()
 amenities = px.pie(
@@ -127,23 +111,29 @@ languages_donut = px.pie(
     values='Total',
     title=f'Top {len(language_data)} Languages'
 )
-left_column, right_column = st.columns(2)
-with left_column:
-    if len(amenities_data) > 0:
-        left_column.plotly_chart(amenities, use_container_width=True)
-    else:
-        st.write("No Data regarding Top Amenities")
-        st.markdown("##")
-        st.markdown("##")
-with right_column:
-    if len(language_data) > 0:
-        st.plotly_chart(languages_donut, use_container_width=True)
-    else:
-        st.write("No Data regarding most used Languages")
-        st.markdown("##")
-        st.markdown("##")
-st.markdown("##")
 
+features_data = data_manager.get_best_features_for_donut()
+features = px.pie(
+    features_data,
+    # hole=0.2,
+    names='Feature',
+    values='Total',
+    title=f'Top features as per user reviews',
+)
+
+column_one,column_two,column_three = st.columns(3)
+with column_one:
+    st.plotly_chart(cusines, use_container_width=True)
+with column_two:
+    st.plotly_chart(hotel_classes, use_container_width=True)
+with column_three:
+    st.plotly_chart(languages_donut, use_container_width=True)
+
+column_one, column_two = st.columns(2)
+with column_one:
+    st.plotly_chart(amenities, use_container_width=True)
+with column_two:
+    st.plotly_chart(features, use_container_width=True)
 # ---- HIDE STREAMLIT STYLE ----
 hide_st_style = """
             <style>

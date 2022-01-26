@@ -172,6 +172,19 @@ class DataOperations:
         classes = sorted(classes.items(), key=lambda x: x[1], reverse=True)
         return classes
 
+    def get_all_features(self, dFrame):
+        features = {}
+        for index, row in dFrame.iterrows():
+            for hotel_feature in row['best_features_as_per_reviews']:
+                if hotel_feature is not None and hotel_feature != 'None':
+                    if hotel_feature in features:
+                        features[hotel_feature] += 1
+                    else:
+                        features[hotel_feature] = 1
+        # sorting in descending order
+        classes = sorted(features.items(), key=lambda x: x[1], reverse=True)
+        return classes
+
     def get_all_cuisines(self, dFrame):
         cuisines = {}
         for index, row in dFrame.iterrows():

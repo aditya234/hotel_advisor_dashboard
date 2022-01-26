@@ -142,7 +142,7 @@ class DashboardDataManager:
                 data_count += 1
             names.append(cuisine)
             counts.append(int(count))
-        return pd.DataFrame({'Cuisine':names,'Total':counts})
+        return pd.DataFrame({'Cuisine': names, 'Total': counts})
 
     def get_classes_for_donut(self):
         counts = []
@@ -156,7 +156,7 @@ class DashboardDataManager:
                 data_count += 1
             names.append(class_name)
             counts.append(int(count))
-        return pd.DataFrame({'Class':names,'Total':counts})
+        return pd.DataFrame({'Class': names, 'Total': counts})
 
     def get_amenities_for_donut(self):
         counts = []
@@ -170,7 +170,7 @@ class DashboardDataManager:
                 data_count += 1
             names.append(amenity)
             counts.append(int(count))
-        return pd.DataFrame({'Amenity':names,'Total':counts})
+        return pd.DataFrame({'Amenity': names, 'Total': counts})
 
     def get_languages_for_donut(self):
         counts = []
@@ -178,13 +178,27 @@ class DashboardDataManager:
         languages = self.data_operations.get_all_languages(self.data)
         data_count = 0
         for language, count in languages:
-            if data_count == 10:
+            if data_count == 5:
                 break
             else:
                 data_count += 1
             names.append(language)
             counts.append(int(count))
-        return pd.DataFrame({'Language':names,'Total':counts})
+        return pd.DataFrame({'Language': names, 'Total': counts})
+
+    def get_best_features_for_donut(self):
+        counts = []
+        names = []
+        feature_data = self.data_operations.get_all_features(self.data)
+        data_count = 0
+        for feature, count in feature_data:
+            if data_count == 10:
+                break
+            else:
+                data_count += 1
+            names.append(feature)
+            counts.append(int(count))
+        return pd.DataFrame({'Feature': names, 'Total': counts})
 
     def get_map_df(self):
         self.map_df = self.data[self.data.lat.notna()]
