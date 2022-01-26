@@ -71,7 +71,7 @@ with column_one:
     ))
 
 with column_two:
-    st.subheader(f"Best Cuisine:\n{data_manager.get_top_cusine()}")
+    st.subheader(f"Best Style:\n{data_manager.get_top_cusine()}")
     st.subheader(f"Most Spoken:\n{data_manager.get_top_language()}")
     st.subheader(f"Best Class:\n{data_manager.get_class()}")
     st.subheader(f"Average Price:\n{round(data_manager.data.price.mean(), 2)}")
@@ -79,11 +79,11 @@ with column_two:
 ######################################################
 cuisine_names, cuisine_counts = data_manager.get_cusines_for_donut()
 cusines = px.pie(
-    hole=0.35,
+    hole=0.2,
     labels=cuisine_counts,
     names=cuisine_names,
     values=cuisine_counts,
-    title=f"Top {len(cuisine_names)} Cuisines",
+    title=f"Top {len(cuisine_names)} Styles",
 )
 class_name, class_counts = data_manager.get_classes_for_donut()
 hotel_classes = px.pie(
