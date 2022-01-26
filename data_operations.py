@@ -11,13 +11,45 @@ class DataOperations:
     def __init__(self):
         self.data = None
         self.cities = []
-        self.add_data()
+        # loading json data from file
+        f1 = open('./data/tokyo_hotels.json', "r")
+        data1 = json.loads(f1.read())
+        f1.close()
+
+        f2 = open('./data/london_hotels.json', "r")
+        data2 = json.loads(f2.read())
+        f1.close()
+
+        f3 = open('./data/singapore_hotels.json', "r")
+        data3 = json.loads(f3.read())
+        f1.close()
+
+        f4 = open('./data/new_york_hotels.json', "r")
+        data4 = json.loads(f4.read())
+        f3.close()
+
+        # adding data into dataframe
+        self.add_city(data1, 'Tokyo')
+        self.add_city(data2, 'London')
+        self.add_city(data3, 'Singapore')
+        self.add_city(data4, 'New York')
 
         # process data
         self.process_data()
 
-    def add_data(self):
-        self.data = pd.read_csv(DATA_PATH)
+    def add_city(self, json_data, city):
+        df_new = pd.json_normalize(json_data)
+        df_new['city'] = city
+        self.cities.append(city)
+        if self.data is None:
+            self.data = df_new
+        else:
+            self.data = self.data.append(df_new)
+
+    def get_lat_long(self):
+        location_df = pd.read_csv(DATA_PATH)
+        self.data['lat'] = location_df['lat']
+        self.data['lon'] = location_df['lon']
 
     def process_data(self):
         # data manipulation and cleaning
@@ -212,6 +244,7 @@ class DataOperations:
             return True
         except ValueError:
             return False
+
 
 # # testing
 # if __name__ == "__main__":
