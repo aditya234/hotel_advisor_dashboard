@@ -78,7 +78,6 @@ with column_two:
 cuisine_data = data_manager.get_cusines_for_donut()
 cusines = px.pie(
     cuisine_data,
-    # hole=0.2,
     names='Cuisine',
     values='Total',
     title=f"Top {len(cuisine_data)} Styles",
@@ -87,7 +86,6 @@ cusines = px.pie(
 class_data = data_manager.get_classes_for_donut()
 hotel_classes = px.pie(
     class_data,
-    # hole=0.2,
     names='Class',
     values='Total',
     title=f'Hotel {len(class_data)} Classes',
@@ -104,7 +102,6 @@ amenities = px.pie(
 language_data = data_manager.get_languages_for_donut()
 languages_donut = px.pie(
     language_data,
-    hole=0.2,
     names='Language',
     values='Total',
     title=f'Top {len(language_data)} Languages'
@@ -113,7 +110,6 @@ languages_donut = px.pie(
 features_data = data_manager.get_best_features_for_donut()
 features = px.pie(
     features_data,
-    # hole=0.2,
     names='Feature',
     values='Total',
     title=f'Top features as per user reviews',
