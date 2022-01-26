@@ -21,6 +21,7 @@ class DashboardDataManager:
         self.data_operations = DataOperations()
         self.cities = self.data_operations.cities
         self.data = self.data_operations.data.copy()
+        self.get_map_df()
         self.set_thresholds()
 
     def set_thresholds(self):
@@ -36,12 +37,11 @@ class DashboardDataManager:
         self.languages = ['NA'] + self.get_list(self.data_operations.get_all_languages(dFrame=self.data))
         self.classes = ['NA'] + self.get_list(self.data_operations.get_all_classes(dFrame=self.data))
 
-    def set_filters(self, city= None):
+    def set_filters(self, city=None):
         self.data = self.data_operations.data.copy()
         # city filter
         if city is not None:
             self.data = self.data_operations.set_city_filter(dFrame=self.data, cities=[city])
-
 
     def get_list(self, map_list):
         result = []
@@ -183,3 +183,7 @@ class DashboardDataManager:
             names.append(language)
             counts.append(int(count))
         return names, counts
+
+    def get_map_df(self):
+        self.map_df = self.data[self.data.lat.notna()]
+        self.map_df = self.map_df[['lat', 'lon']]

@@ -6,6 +6,7 @@ import plotly.express as px
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import numpy as np
+import pydeck as pdk
 
 # ----- PAGE CONFIG (title bar)------
 st.set_page_config(
@@ -38,14 +39,41 @@ distribution of hotels over various geographic locations around {city}. And the 
 distribution of various important factors one must consider while opening a hotel.""")
 st.markdown("##")
 
-column_one, column_two, column_three, column_four = st.columns(4)
+column_one, column_two = st.columns((4, 1))
 with column_one:
-    st.subheader(f"Best Cuisine:\n{data_manager.get_top_cusine()}")
+    st.pydeck_chart(pdk.Deck(
+        map_style='mapbox://styles/mapbox/light-v9',
+        initial_view_state=pdk.ViewState(
+            latitude=data_manager.data_operations.coordinates[city][0],
+            longitude=data_manager.data_operations.coordinates[city][1],
+            zoom=11,
+            pitch=30,
+        ),
+        layers=[
+            pdk.Layer(
+               'HexagonLayer',
+               data=data_manager.map_df,
+               get_position='[lon, lat]',
+               radius=200,
+               elevation_scale=4,
+               elevation_range=[0, 5000],
+               pickable=True,
+               extruded=True,
+            ),
+            pdk.Layer(
+                'ScatterplotLayer',
+                data=data_manager.map_df,
+                get_position='[lon, lat]',
+                get_color='[200, 30, 0, 160]',
+                get_radius=300,
+            ),
+        ],
+    ))
+
 with column_two:
+    st.subheader(f"Best Cuisine:\n{data_manager.get_top_cusine()}")
     st.subheader(f"Most Spoken:\n{data_manager.get_top_language()}")
-with column_three:
     st.subheader(f"Best Class:\n{data_manager.get_class()}")
-with column_four:
     st.subheader(f"Average Price:\n{round(data_manager.data.price.mean(), 2)}")
 
 st.markdown("""---""")
@@ -134,9 +162,9 @@ st.markdown("##")
 # ---- HIDE STREAMLIT STYLE ----
 hide_st_style = """
             <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
+            #MainMenu {display: none;}
+            footer {display: none;}
+            header {display: none;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)

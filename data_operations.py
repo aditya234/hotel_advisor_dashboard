@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 import math
+import pydeck as pdk
 
 DATA_PATH = './data/data.csv'
 
@@ -20,20 +21,26 @@ class DataOperations:
         data2 = json.loads(f2.read())
         f1.close()
 
-        f3 = open('./data/singapore_hotels.json', "r")
-        data3 = json.loads(f3.read())
-        f1.close()
-
-        f4 = open('./data/new_york_hotels.json', "r")
-        data4 = json.loads(f4.read())
-        f3.close()
-
+        # f3 = open('./data/singapore_hotels.json', "r")
+        # data3 = json.loads(f3.read())
+        # f1.close()
+        #
+        # f4 = open('./data/new_york_hotels.json', "r")
+        # data4 = json.loads(f4.read())
+        # f3.close()
+        # defining default coordinates
+        self.coordinates = {
+            'Tokyo': [35.6762, 139.6503],
+            'London': [51.5072, 0.1276],
+            'Singapore': [1.3521, 103.8198],
+            'New York': [40.7128, 74.0060]
+        }
         # adding data into dataframe
         self.add_city(data1, 'Tokyo')
         self.add_city(data2, 'London')
-        self.add_city(data3, 'Singapore')
-        self.add_city(data4, 'New York')
-
+        # self.add_city(data3, 'Singapore')
+        # self.add_city(data4, 'New York')
+        self.get_lat_long()
         # process data
         self.process_data()
 
@@ -48,6 +55,7 @@ class DataOperations:
 
     def get_lat_long(self):
         location_df = pd.read_csv(DATA_PATH)
+        location_df = location_df[location_df.city.isin(['Tokyo','London'])]
         self.data['lat'] = location_df['lat']
         self.data['lon'] = location_df['lon']
 
@@ -244,7 +252,6 @@ class DataOperations:
             return True
         except ValueError:
             return False
-
 
 # # testing
 # if __name__ == "__main__":
