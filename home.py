@@ -1,9 +1,7 @@
 import pandas as pd
 import streamlit as st
 from data_manager import KeyStrings, DashboardDataManager
-import extra_streamlit_components as stx
 import plotly.express as px
-from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import numpy as np
 import pydeck as pdk
