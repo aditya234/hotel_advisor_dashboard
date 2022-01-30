@@ -15,9 +15,9 @@ data_manager = DashboardDataManager()
 data_manager.get_filter_data()
 
 # ---- SIDEBAR ----
-st.sidebar.header("Apply Filters:")
-st.sidebar.write("")
-city = st.sidebar.selectbox(
+# st.header("Apply Filters:")
+st.write("")
+city = st.selectbox(
     "Select a City:",
     options=data_manager.cities,
     key=KeyStrings.CITY_FILTER
@@ -28,7 +28,6 @@ data_manager.set_filters(city=city)
 
 data_manager.get_top_20_hotels()
 # ----MAIN SECTION ----
-st.header(f"*Do you wish to open a hotel in {city}?*")
 st.markdown(f"""This visualisation aims to explore the dynamics of the hotel business in {city}. The Map shows the 
 distribution of hotels over various geographic locations around {city}. And the other plots represent the class 
 distribution of various important factors one must consider while opening a hotel.""")
@@ -36,18 +35,18 @@ st.markdown("##")
 # header stats
 c1, c2, c3, c4 = st.columns(4)
 with c1:
-    st.subheader(f"Best Style\n{data_manager.get_top_cusine()}")
+    st.subheader(f"Best Restaurant Style\n{data_manager.get_top_cusine()}")
 with c2:
     st.subheader(f"Most Spoken\n{data_manager.get_top_language()}")
 with c3:
-    st.subheader(f"Best Class\n{data_manager.get_class()}")
+    st.subheader(f"Top Hotel Type\n{data_manager.get_class()}")
 with c4:
     st.subheader(f"Average Price\n{round(data_manager.data.price.mean(), 2)}")
 # make a map
 st.markdown("##")
 st.markdown("##")
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     layer = pdk.Layer(
@@ -56,7 +55,7 @@ with col1:
     )
 
     view_state = pdk.ViewState(latitude=data_manager.data_operations.coordinates[city][0],
-                               longitude=data_manager.data_operations.coordinates[city][1], zoom=11, bearing=0,
+                               longitude=data_manager.data_operations.coordinates[city][1], zoom=10.5, bearing=0,
                                pitch=45,height=300, width=400)
 
     map = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/light-v9',
@@ -71,7 +70,22 @@ with col2:
     )
 
     view_state = pdk.ViewState(latitude=data_manager.data_operations.coordinates[city][0],
-                               longitude=data_manager.data_operations.coordinates[city][1], zoom=11, bearing=0,
+                               longitude=data_manager.data_operations.coordinates[city][1], zoom=10.5, bearing=0,
+                               pitch=45,height=300, width=400)
+
+    map = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/light-v9',
+                   initial_view_state=view_state, tooltip={"text": "{position}\nTotal Hotels: {count}"}, height=100, )
+    st.pydeck_chart(map)
+    st.write("Hotel Ratings across different locations")
+
+with col3:
+    layer = pdk.Layer(
+        "GridLayer", data_manager.map_df, pickable=True, extruded=True, cell_size=200, elevation_scale=40,
+        get_position="[lon, lat]",
+    )
+
+    view_state = pdk.ViewState(latitude=data_manager.data_operations.coordinates[city][0],
+                               longitude=data_manager.data_operations.coordinates[city][1], zoom=10.5, bearing=0,
                                pitch=45,height=300, width=400)
 
     map = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/light-v9',
@@ -86,7 +100,7 @@ cusines = px.pie(
     cuisine_data,
     names='Cuisine',
     values='Total',
-    title=f"Top {len(cuisine_data)} Styles",
+    title=f"Restaurant Styles",
 )
 
 class_data = data_manager.get_classes_for_donut()
@@ -94,7 +108,7 @@ hotel_classes = px.pie(
     class_data,
     names='Class',
     values='Total',
-    title=f'Hotel {len(class_data)} Classes',
+    title=f'Hotel Types',
 )
 
 amenities_data = data_manager.get_amenities_for_donut()
@@ -102,7 +116,7 @@ amenities = px.pie(
     amenities_data,
     names='Amenity',
     values='Total',
-    title=f'Top {len(amenities_data)} Amenities'
+    title=f'Hotel Amenities'
 )
 
 language_data = data_manager.get_languages_for_donut()
@@ -110,7 +124,7 @@ languages_donut = px.pie(
     language_data,
     names='Language',
     values='Total',
-    title=f'Top {len(language_data)} Languages'
+    title=f'Language Spoken'
 )
 
 features_data = data_manager.get_best_features_for_donut()
