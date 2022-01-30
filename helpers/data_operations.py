@@ -33,7 +33,7 @@ class DataOperations:
             'Tokyo': [35.6762, 139.6503],
             'London': [51.5072, 0.1276],
             'Singapore': [1.3521, 103.8198],
-            'New York': [40.7128, 74.0060]
+            'New York': [40.7128, -74.0060]
         }
         # adding data into dataframe
         self.add_city(data1, 'Tokyo')

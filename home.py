@@ -34,43 +34,22 @@ distribution of hotels over various geographic locations around {city}. And the 
 distribution of various important factors one must consider while opening a hotel.""")
 st.markdown("##")
 
-column_one, column_two = st.columns((4, 1))
-with column_one:
-    # st.write(data_manager.map_df)
-    st.pydeck_chart(pdk.Deck(
-        map_style='mapbox://styles/mapbox/light-v9',
-        initial_view_state=pdk.ViewState(
-            latitude=data_manager.data_operations.coordinates[city][0],
-            longitude=data_manager.data_operations.coordinates[city][1],
-            zoom=11,
-            pitch=30,
-        ),
-        layers=[
-            pdk.Layer(
-                'HexagonLayer',
-                data=data_manager.map_df,
-                get_position='[lon, lat]',
-                radius=200,
-                elevation_scale=4,
-                elevation_range=[0, 5000],
-                pickable=True,
-                extruded=True,
-            ),
-            pdk.Layer(
-                'ScatterplotLayer',
-                data=data_manager.map_df,
-                get_position='[lon, lat]',
-                get_color='[200, 30, 0, 160]',
-                get_radius=300,
-            ),
-        ],
-    ))
 
-with column_two:
-    st.subheader(f"Best Style:\n{data_manager.get_top_cusine()}")
-    st.subheader(f"Most Spoken:\n{data_manager.get_top_language()}")
-    st.subheader(f"Best Class:\n{data_manager.get_class()}")
-    st.subheader(f"Average Price:\n{round(data_manager.data.price.mean(), 2)}")
+layer = pdk.Layer(
+        "GridLayer", data_manager.map_df, pickable=True, extruded=True, cell_size=200, elevation_scale=40, get_position="[lon, lat]",
+    )
+
+view_state = pdk.ViewState(latitude=data_manager.data_operations.coordinates[city][0],
+                               longitude=data_manager.data_operations.coordinates[city][1], zoom=11, bearing=0, pitch=45)
+
+map = pdk.Deck(layers=[layer],
+               initial_view_state=view_state, tooltip={"text": "{position}\nTotal Hotels: {count}"}, )
+st.pydeck_chart(map)
+
+    # st.subheader(f"Best Style:\n{data_manager.get_top_cusine()}")
+    # st.subheader(f"Most Spoken:\n{data_manager.get_top_language()}")
+    # st.subheader(f"Best Class:\n{data_manager.get_class()}")
+    # st.subheader(f"Average Price:\n{round(data_manager.data.price.mean(), 2)}")
 
 ######################################################
 cuisine_data = data_manager.get_cusines_for_donut()
@@ -127,11 +106,16 @@ with column_one:
 with column_two:
     st.plotly_chart(features, use_container_width=True)
 # ---- HIDE STREAMLIT STYLE ----
-hide_st_style = """
-            <style>
-            #MainMenu {display: none;}
-            footer {display: none;}
-            header {display: none;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
+
+padding = 0
+st.markdown(f""" <style>
+    .reportview-container .main .block-container{{
+        padding-top: {padding}rem;
+        padding-right: {padding}rem;
+        padding-left: {padding}rem;
+        padding-bottom: {padding}rem;
+    }} </style> """, unsafe_allow_html=True)
