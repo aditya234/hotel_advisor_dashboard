@@ -1,6 +1,6 @@
 import pandas as pd
 
-from data_operations import DataOperations
+from helpers.data_operations import DataOperations
 import numpy as np
 
 

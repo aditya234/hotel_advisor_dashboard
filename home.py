@@ -1,9 +1,6 @@
-import pandas as pd
 import streamlit as st
-from data_manager import KeyStrings, DashboardDataManager
+from helpers.data_manager import KeyStrings, DashboardDataManager
 import plotly.express as px
-import matplotlib.pyplot as plt
-import numpy as np
 import pydeck as pdk
 
 # ----- PAGE CONFIG (title bar)------

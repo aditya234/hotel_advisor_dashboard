@@ -5,7 +5,7 @@ import json
 import math
 import pydeck as pdk
 
-DATA_PATH = './data/data.csv'
+DATA_PATH = './data/locations.csv'
 
 
 class DataOperations:
@@ -21,13 +21,13 @@ class DataOperations:
         data2 = json.loads(f2.read())
         f1.close()
 
-        # f3 = open('./data/singapore_hotels.json', "r")
-        # data3 = json.loads(f3.read())
-        # f1.close()
-        #
-        # f4 = open('./data/new_york_hotels.json', "r")
-        # data4 = json.loads(f4.read())
-        # f3.close()
+        f3 = open('./data/singapore_hotels.json', "r")
+        data3 = json.loads(f3.read())
+        f1.close()
+
+        f4 = open('./data/new_york_hotels.json', "r")
+        data4 = json.loads(f4.read())
+        f3.close()
         # defining default coordinates
         self.coordinates = {
             'Tokyo': [35.6762, 139.6503],
@@ -38,8 +38,8 @@ class DataOperations:
         # adding data into dataframe
         self.add_city(data1, 'Tokyo')
         self.add_city(data2, 'London')
-        # self.add_city(data3, 'Singapore')
-        # self.add_city(data4, 'New York')
+        self.add_city(data3, 'Singapore')
+        self.add_city(data4, 'New York')
         self.get_lat_long()
         # process data
         self.process_data()
@@ -55,7 +55,7 @@ class DataOperations:
 
     def get_lat_long(self):
         location_df = pd.read_csv(DATA_PATH)
-        location_df = location_df[location_df.city.isin(['Tokyo','London'])]
+        # location_df = location_df[location_df.city.isin(['Tokyo','London'])]
         self.data['lat'] = location_df['lat']
         self.data['lon'] = location_df['lon']
 
@@ -269,4 +269,4 @@ class DataOperations:
 # # testing
 # if __name__ == "__main__":
 #     data_operations = DataOperations()
-#     print(data_operations.set_class_filter(dFrame=data_operations.data, class_list=['Budget']))
+#     print(data_operations.data)
