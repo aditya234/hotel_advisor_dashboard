@@ -36,6 +36,7 @@ st.markdown("##")
 
 column_one, column_two = st.columns((4, 1))
 with column_one:
+    # st.write(data_manager.map_df)
     st.pydeck_chart(pdk.Deck(
         map_style='mapbox://styles/mapbox/light-v9',
         initial_view_state=pdk.ViewState(

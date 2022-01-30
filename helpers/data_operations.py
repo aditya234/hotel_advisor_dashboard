@@ -51,13 +51,13 @@ class DataOperations:
         if self.data is None:
             self.data = df_new
         else:
-            self.data = self.data.append(df_new)
+            self.data = self.data.append(df_new, ignore_index=True)
 
     def get_lat_long(self):
         location_df = pd.read_csv(DATA_PATH)
         # location_df = location_df[location_df.city.isin(['Tokyo','London'])]
-        self.data['lat'] = location_df['lat']
-        self.data['lon'] = location_df['lon']
+        self.data['lon'] = location_df['lat']
+        self.data['lat'] = location_df['lon']
 
     def process_data(self):
         # data manipulation and cleaning
